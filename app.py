@@ -7,10 +7,10 @@ import io
 app = Flask(__name__)
 
 # Load the model
-model = load_model('veggiehealth_model_1.h5')
+model = load_model('veggiehealth_model_5.h5')
 
 def preprocess_image(img_data):
-    img = image.load_img(io.BytesIO(img_data), target_size=(150, 150))
+    img = image.load_img(io.BytesIO(img_data), target_size=(224, 224))
     img_array = image.img_to_array(img)
     img_array = np.expand_dims(img_array, axis=0)
     return img_array
@@ -35,10 +35,10 @@ def predict():
         return jsonify({'prediction': 'Tidak terdeteksi'})
 
     result = np.argmax(prediction)
-    classes = ['Bitter_Gourd', 'Brinjal', 'Broccoli', 'Cabbage', 'Carrot', 'Cassava_leaves', 'Cauliflower', 'Cucumber', 'Gnetum_gnemon', 'Potato', 'Tomato', 'bean_sprouts', 'string_bean']  # Update with your actual classes
+    classes = ['Bitter_Gourd', 'Brinjal', 'Broccoli', 'Cabbage', 'Carrot', 'Cassava_leaves', 'Cauliflower', 'Cucumber', 'Enoki_mushrooms', 'Gnetum_gnemon', 'Potato', 'Tomato', 'bean_sprouts', 'sawi_hijau', 'sawi_putih', 'spinach', 'string_bean', 'water_spinach']  # Update with your actual classes
     predicted_class = classes[result]
+    return jsonify({'prediction': predicted_class, 'akurasi': float(highest_probability)})
 
-    return jsonify({'prediction': predicted_class})
 
 if __name__ == '__main__':
     app.run(debug=True)
